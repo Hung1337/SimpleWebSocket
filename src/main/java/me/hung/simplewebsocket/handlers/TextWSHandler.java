@@ -1,5 +1,7 @@
 package me.hung.simplewebsocket.handlers;
 
+import me.hung.simplewebsocket.entity.MessageEntity;
+import me.hung.simplewebsocket.service.MessageService;
 import me.hung.simplewebsocket.service.SocketPoolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +24,14 @@ public class TextWSHandler extends TextWebSocketHandler {
     @Autowired
     private SocketPoolService socketPoolService;
 
+    @Autowired
+    private MessageService messageService;
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         socketPoolService.addSession(session);
         LOG.debug("К веб-сокету подключился новый клиент! ID сессии: {}", session.getId());
+        messageService.sendMessageBySession(session.getId(), new MessageEntity("Admin", "Hello!"));
     }
 
     @Override

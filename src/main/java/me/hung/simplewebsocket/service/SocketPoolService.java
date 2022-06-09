@@ -1,10 +1,13 @@
 package me.hung.simplewebsocket.service;
 
 import lombok.Data;
+import me.hung.simplewebsocket.entity.WSSession;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Danila Avdeyenko
@@ -48,4 +51,15 @@ public class SocketPoolService {
     public ArrayList<WebSocketSession> getActiveSessions() {
         return activeSessions;
     }
+
+    public List<WSSession> getWSSessions() {
+        List<WSSession> sessions = new ArrayList<>();
+        for (WebSocketSession activeSession : this.activeSessions) {
+            Principal principal = activeSession.getPrincipal();
+            String username = principal == null ? "Null" : principal.getName();
+            sessions.add(new WSSession(activeSession.getId(), username));
+        }
+        return sessions;
+    }
+
 }

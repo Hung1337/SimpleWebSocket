@@ -45,5 +45,7 @@ public class SocketPoolService {
         return null;
     }
 
-
+    public ArrayList<WebSocketSession> getActiveSessions() {
+        return activeSessions;
+    }
 }

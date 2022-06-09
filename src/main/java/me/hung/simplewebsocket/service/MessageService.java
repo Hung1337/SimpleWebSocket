@@ -21,9 +21,9 @@ public class MessageService {
     private SocketPoolService socketPoolService;
 
     private boolean send(WebSocketSession session, MessageEntity message) {
-        if (session == null) {
-            return false;
-        }
+//        if (session == null) {
+//            return false;
+//        }
         try {
             session.sendMessage(new TextMessage(JsonHelper.toJson(message)));
         } catch (IOException e) {
@@ -34,11 +34,17 @@ public class MessageService {
 
     public boolean sendMessageBySession(String sessionId, MessageEntity message) {
         WebSocketSession webSocketSession = socketPoolService.getSessionById(sessionId);
+        if (webSocketSession == null || !webSocketSession.isOpen()) {
+            return false;
+        }
         return send(webSocketSession, message);
     }
 
     public boolean sendMessageByUsername(String username, MessageEntity message) {
         WebSocketSession webSocketSession = socketPoolService.getSessionByUsername(username);
+        if (webSocketSession == null || !webSocketSession.isOpen()) {
+            return false;
+        }
         return send(webSocketSession, message);
     }
 

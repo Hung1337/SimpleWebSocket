@@ -30,7 +30,7 @@ public class TextWSHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         socketPoolService.addSession(session);
-        LOG.debug("К веб-сокету подключился новый клиент! ID сессии: {}", session.getId());
+        LOG.info("К веб-сокету подключился новый клиент! ID сессии: {}", session.getId());
         messageService.sendMessageBySession(session.getId(), new MessageEntity("Admin", "Hello!"));
     }
 
@@ -40,13 +40,13 @@ public class TextWSHandler extends TextWebSocketHandler {
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-        LOG.debug("Произошла ошибка у {}. Ошибка: {}", session.getId(), exception.getMessage());
+        LOG.info("Произошла ошибка у {}. Ошибка: {}", session.getId(), exception.getMessage());
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
         socketPoolService.deleteSession(session);
-        LOG.debug("От веб-сокета отключился клиент! ID сессии: {}", session.getId());
+        LOG.info("От веб-сокета отключился клиент! ID сессии: {}", session.getId());
     }
 
 
